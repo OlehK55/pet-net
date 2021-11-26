@@ -1,14 +1,19 @@
 /* eslint-disable @typescript-eslint/no-namespace */
 import { combineReducers } from 'redux';
-import { routerReducer } from 'react-router-redux';
-import { UserReducer } from './user';
-import { IRootReducer } from './state';
-import { AuthReducer } from './auth';
+import { persistReducer } from 'redux-persist';
+import storage from 'redux-persist/lib/storage';
 
-const rootReducer = combineReducers<IRootReducer>({
-    router: routerReducer,
-    user: UserReducer as any,
-    auth: AuthReducer as any,
+import userReducer from './user';
+
+
+const persistConfig = {
+    key: 'root',
+    storage,
+    whitelist: []
+};
+
+const rootReducer = combineReducers({
+    user: userReducer
 });
 
-export default rootReducer;
+export default persistReducer(persistConfig, rootReducer);
