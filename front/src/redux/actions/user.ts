@@ -1,24 +1,47 @@
-import UserActionTypes from '../../types/user';
-import { IUser, IEmailAndPassword } from '../../types/user'
+import { ActionType } from '../acttion-types';
+import { IUser, IEmailAndPassword } from '../../types/user';
+import { ErrorMessage } from '../../types/handlers/ErrorMessage';
 
-export const signInSuccess = (user: IUser) => ({
-    type: UserActionTypes.SIGN_IN_SUCCESS,
-    payload: user
-});
+export interface signInSuccessAction {
+    type: ActionType.SIGN_IN_SUCCESS;
+    payload: IUser;
+};
 
-export const signInFailure = (error: any) => ({
-    type: UserActionTypes.SIGN_IN_FAILURE,
-    payload: error
-});
+export interface  signInFailureAction {
+    type: ActionType.SIGN_IN_FAILURE;
+    payload: ErrorMessage;
+};
 
-export const emailSignInStart = (emailAndPassword: IEmailAndPassword) => ({
-    type: UserActionTypes.EMAIL_SIGN_IN_START,
-    payload: emailAndPassword
-});
+export interface  emailSignInStartAction {
+    type: ActionType.EMAIL_SIGN_IN_START,
+    payload: IEmailAndPassword
+};
 
-export const checkUserSession = () => ({
-    type: UserActionTypes.CHECK_USER_SESSION
-});
+export interface signOutStartAction {
+    type: ActionType.SIGN_OUT_START
+};
+
+export interface signOutSuccessAction {
+    type: ActionType.SIGN_OUT_SUCCESS
+};
+
+export interface signOutFailureAction {
+    type: ActionType.SIGN_OUT_FAILURE,
+    payload: ErrorMessage;
+};
+
+export interface  checkUserSessionAction {
+    type: ActionType.CHECK_USER_SESSION
+};
+
+export type Action =
+    | signInSuccessAction
+    | signInFailureAction
+    | emailSignInStartAction
+    | signOutStartAction
+    | signOutSuccessAction
+    | signOutFailureAction
+    | checkUserSessionAction;
 
 
 
