@@ -1,7 +1,12 @@
-import React, { FormEvent }  from 'react';
-import { Paper, withStyles, Grid, TextField, Button, FormControlLabel, Checkbox } from '@material-ui/core';
+import React, {Dispatch, FormEvent, useState} from 'react';
+import { connect } from 'react-redux';
+import { Paper, withStyles, Grid, TextField, Button, Input, Checkbox } from '@material-ui/core';
 import { Face, Fingerprint } from '@material-ui/icons'
 import { ILoginArguments } from '../../../types/handlers/ILoginArguments';
+import { Action } from '../../../redux/actions';
+
+
+import { emailSignInStart } from '../../../redux/action-creators';
 
 const styles = (theme: { spacing: { unit: number; }; }) => ({
     margin: {
@@ -11,25 +16,33 @@ const styles = (theme: { spacing: { unit: number; }; }) => ({
         padding: theme.spacing.unit
     }
 });
-interface ILoginFormProps  {
-    handleSubmit(values: ILoginArguments): void,
-    handleError(error: any): void,
-}
 
-function LoginForm(props: ILoginFormProps){
+// @ts-ignore
+function SignInForm({emailSignInStart}){
     function onSubmit(e: FormEvent): void {
         e.preventDefault();
-
+        emailSignInStart(email, password);
     }
+
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+
+    const handleChange = (event:any) => {
+        const { value, name } = event.target;
+        name === 'email'? setEmail(value) : setPassword(value);
+    };
+
         return (
             <Paper>
+                <form onSubmit={onSubmit} className="login-form">
                 <div>
                     <Grid container spacing={8} alignItems="flex-end">
                         <Grid item>
                             <Face />
                         </Grid>
                         <Grid item md={true} sm={true} xs={true}>
-                            <TextField id="username" label="Username" type="email" fullWidth autoFocus required />
+                            <Input onChange={handleChange}
+                                       value={email} name='email' />
                         </Grid>
                     </Grid>
                     <Grid container spacing={8} alignItems="flex-end">
@@ -37,7 +50,8 @@ function LoginForm(props: ILoginFormProps){
                             <Fingerprint />
                         </Grid>
                         <Grid item md={true} sm={true} xs={true}>
-                            <TextField id="password" label="Password" type="password" fullWidth required />
+                            <Input onChange={handleChange}
+                                   value={password} name='password' />
                         </Grid>
                     </Grid>
                     <Grid container alignItems="center" justify="space-between">
@@ -46,13 +60,22 @@ function LoginForm(props: ILoginFormProps){
                         </Grid>
                     </Grid>
                     <Grid container justify="center" style={{ marginTop: '10px' }}>
-                        <Button variant="outlined" color="primary" style={{ textTransform: "none" }}>Login</Button>
+                        <Button type="submit" variant="outlined" color="primary" style={{ textTransform: "none" }}>Login</Button>
                     </Grid>
                 </div>
+                </form>
             </Paper>
         );
 
 }
 
-// @ts-ignore
-export default withStyles(styles)(LoginForm);
+const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
+    emailSignInStart: (email: string, password: string) =>
+        dispatch(emailSignInStart({ email, password }))
+});
+
+
+export default connect(
+    null,
+    mapDispatchToProps
+)(SignInForm);
