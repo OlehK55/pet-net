@@ -45,16 +45,14 @@ export const createUserProfileDocument = async (userAuth: IUser , additionalData
 
 export const getCurrentUser = () => {
     return new Promise((resolve, reject) => {
-        const unsubscribe = auth.onAuthStateChanged((userAuth:any) => {
+        const unsubscribe = auth.onAuthStateChanged((userAuth) => {
             unsubscribe();
             resolve(userAuth);
         }, reject);
     });
 };
 
-// @ts-ignore
 export const auth = firebase.auth();
-// @ts-ignore
 export const firestore = firebase.firestore();
 
 export default firebase;

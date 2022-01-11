@@ -1,5 +1,5 @@
 import { ActionType } from '../acttion-types';
-import { IUser, IEmailAndPassword } from '../../types/user';
+import {IUser, IEmailAndPassword, IUserCredentials} from '../../types/user';
 import { ErrorMessage } from '../../types/handlers/ErrorMessage';
 
 export interface signInSuccessAction {
@@ -13,8 +13,23 @@ export interface  signInFailureAction {
 };
 
 export interface  emailSignInStartAction {
-    type: ActionType.EMAIL_SIGN_IN_START,
-    payload: IEmailAndPassword
+    type: ActionType.EMAIL_SIGN_IN_START;
+    payload: IEmailAndPassword;
+};
+
+export interface  signUpStartAction {
+    type: ActionType.SIGN_UP_START;
+    payload: IUserCredentials;
+};
+
+export interface signUpSuccessAction {
+    type: ActionType.SIGN_UP_SUCCESS;
+    payload: { user: IUser, additionalData: any };
+};
+
+export interface signUpFailureAction {
+    type: ActionType.SIGN_UP_FAILURE;
+    payload: ErrorMessage;
 };
 
 export interface signOutStartAction {
@@ -38,6 +53,9 @@ export type Action =
     | signInSuccessAction
     | signInFailureAction
     | emailSignInStartAction
+    | signUpStartAction
+    | signUpSuccessAction
+    | signUpFailureAction
     | signOutStartAction
     | signOutSuccessAction
     | signOutFailureAction

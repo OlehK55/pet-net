@@ -15,6 +15,7 @@ const userReducer = (state = INITIAL_STATE, action: Action) => {
                 error: null
             };
         case ActionType.SIGN_OUT_SUCCESS:
+            console.log('reduser SIGN_OUT_SUCCESS:');
             return {
                 ...state,
                 currentUser: null,
@@ -22,6 +23,8 @@ const userReducer = (state = INITIAL_STATE, action: Action) => {
             };
         case ActionType.SIGN_IN_FAILURE:
         case ActionType.SIGN_OUT_FAILURE:
+        case ActionType.SIGN_UP_FAILURE:
+            console.log('reduser SIGN_OUT_FAILURE:');
             return {
                 ...state,
                 error: action.payload

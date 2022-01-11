@@ -5,7 +5,7 @@ import { Face, Fingerprint } from '@material-ui/icons';
 import { Action } from '../../../redux/actions';
 
 
-import { emailSignInStart } from '../../../redux/action-creators';
+import { signUpStart } from '../../../redux/action-creators';
 
 const styles = (theme: { spacing: { unit: number; }; }) => ({
     margin: {
@@ -17,23 +17,37 @@ const styles = (theme: { spacing: { unit: number; }; }) => ({
 });
 
 interface Props {
-    emailSignInStart: (email: string, password: string) => void;
+    SignUpStart: (
+        email: string,
+        password: string,
+        displayName: string) => void;
 }
 
 
-const  SignInForm: React.FC<Props> = (props) => {
-    const { emailSignInStart } = props;
+const  SignUpForm: React.FC<Props> = (props) => {
+    const { SignUpStart } = props;
     function onSubmit(e: FormEvent): void {
         e.preventDefault();
-        emailSignInStart(email, password);
+        SignUpStart(email, password, displayName);
     }
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [displayName, setUsername] = useState('');
 
     const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
         const { value, name } = event.target;
-        name === 'email'? setEmail(value) : setPassword(value);
+        switch (name) {
+            case 'email':
+                setEmail(value);
+                break;
+            case 'password':
+                setPassword(value);
+                break;
+            case 'username':
+                setUsername(value);
+                break;
+        }
     };
 
         return (
@@ -47,6 +61,15 @@ const  SignInForm: React.FC<Props> = (props) => {
                         <Grid item md={true} sm={true} xs={true}>
                             <Input onChange={handleChange}
                                        value={email} name='email' />
+                        </Grid>
+                    </Grid>
+                    <Grid container spacing={8} alignItems="flex-end">
+                        <Grid item>
+                            <Face />
+                        </Grid>
+                        <Grid item md={true} sm={true} xs={true}>
+                            <Input onChange={handleChange}
+                                   value={displayName} name='username' />
                         </Grid>
                     </Grid>
                     <Grid container spacing={8} alignItems="flex-end">
@@ -74,12 +97,12 @@ const  SignInForm: React.FC<Props> = (props) => {
 }
 
 const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
-    emailSignInStart: (email: string, password: string) =>
-        dispatch(emailSignInStart({ email, password }))
+    SignUpStart: (email: string, password: string, displayName: string) =>
+        dispatch(signUpStart({ email, password, displayName }))
 });
 
 
 export default connect(
     null,
     mapDispatchToProps
-)(SignInForm);
+)(SignUpForm);
