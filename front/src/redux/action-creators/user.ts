@@ -6,9 +6,12 @@ import {
     signOutStartAction,
     signOutSuccessAction,
     signOutFailureAction,
-    checkUserSessionAction
+    checkUserSessionAction,
+    signUpStartAction,
+    signUpFailureAction,
+    signUpSuccessAction
 } from '../actions';
-import { IUser, IEmailAndPassword } from '../../types/user';
+import user, { IUser, IEmailAndPassword, IUserCredentials } from '../../types/user';
 import { ErrorMessage } from '../../types/handlers/ErrorMessage';
 
 
@@ -25,6 +28,21 @@ export const signInFailure = (error: ErrorMessage):signInFailureAction => ({
 export const emailSignInStart = (emailAndPassword: IEmailAndPassword):emailSignInStartAction => ({
     type: ActionType.EMAIL_SIGN_IN_START,
     payload: emailAndPassword
+});
+
+export const signUpStart = (userCredentials: IUserCredentials): signUpStartAction  => ({
+    type: ActionType.SIGN_UP_START,
+    payload: userCredentials
+});
+
+export const signUpSuccess = ({ user, additionalData }: { user: IUser, additionalData: any }):signUpSuccessAction => ({
+    type: ActionType.SIGN_UP_SUCCESS,
+    payload: { user, additionalData }
+});
+
+export const signUpFailure = (error: ErrorMessage): signUpFailureAction => ({
+    type: ActionType.SIGN_UP_FAILURE,
+    payload: error
 });
 
 export const signOutStart = (): signOutStartAction => ({
