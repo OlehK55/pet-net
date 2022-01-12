@@ -1,9 +1,9 @@
 import React from 'react';
 
-export default function GuestPage() {
+export default function Friends() {
     return (
         <div>
-            <h1>Hello guest</h1>
+            <h1>Friends</h1>
         </div>
     )
 }
