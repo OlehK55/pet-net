@@ -15,6 +15,8 @@ import { selectCurrentUser } from './redux/selectors/user';
 import {checkUserSession, signOutStart} from './redux/action-creators';
 import { Action } from "./redux/actions";
 import {IUser} from "./types/user";
+import People from "./pages/people";
+import AddNews from "./pages/addnews";
 
 interface Props {
     checkUserSession: () => void;
@@ -40,12 +42,14 @@ class App extends React.Component<Props> {
         console.log('isAuthorised', isAuthorised);
         return (
             <div>
-                {isAuthorised? <Header isAuthorised={isAuthorised} handleSignOut={signOut} />: ''}
+                {isAuthorised? <Header isAuthorised={isAuthorised} currentUser={currentUser} handleSignOut={signOut} />: ''}
                 <Switch>
                     <Route exact path='/' component={isAuthorised? HomePage: SignIn} />
                     <Route exact path='/signin' component={SignIn} />
                     <Route exact path='/signup' component={SignUp} />
                     <Route exact path='/profile' component={Profile} />
+                    <Route exact path='/people' component={People} />
+                    <Route exact path='/addnews' component={AddNews} />
                 </Switch>
             </div>
         );

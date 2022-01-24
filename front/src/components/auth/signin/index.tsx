@@ -1,20 +1,12 @@
 import React, {ChangeEvent, Dispatch, FormEvent, useState} from 'react';
 import { connect } from 'react-redux';
-import { Paper, withStyles, Grid, Button, Input } from '@material-ui/core';
+import { Grid, Button, Input } from '@material-ui/core';
 import { Face, Fingerprint } from '@material-ui/icons';
 import { Action } from '../../../redux/actions';
 
-
 import { emailSignInStart } from '../../../redux/action-creators';
+import {useHistory} from "react-router-dom";
 
-const styles = (theme: { spacing: { unit: number; }; }) => ({
-    margin: {
-        margin: theme.spacing.unit * 2,
-    },
-    padding: {
-        padding: theme.spacing.unit
-    }
-});
 
 interface Props {
     emailSignInStart: (email: string, password: string) => void;
@@ -23,6 +15,7 @@ interface Props {
 
 const  SignInForm: React.FC<Props> = (props) => {
     const { emailSignInStart } = props;
+    let history = useHistory();
     function onSubmit(e: FormEvent): void {
         e.preventDefault();
         emailSignInStart(email, password);
@@ -37,38 +30,38 @@ const  SignInForm: React.FC<Props> = (props) => {
     };
 
         return (
-            <Paper>
-                <form onSubmit={onSubmit} className="login-form">
-                <div>
-                    <Grid container spacing={8} alignItems="flex-end">
-                        <Grid item>
-                            <Face />
+            <>
+                <form onSubmit={onSubmit} >
+                    <Grid item style={{ marginTop: '155px' }} xs={12} spacing={6} container justifyContent="center" alignItems="center">
+                        <Grid container item  justifyContent="center" spacing={3} alignItems="center">
+                            <Grid item>
+                                <Face />
+                            </Grid>
+                            <Grid item>
+                                <Input onChange={handleChange}
+                                           value={email} name='email' />
+                            </Grid>
                         </Grid>
-                        <Grid item md={true} sm={true} xs={true}>
-                            <Input onChange={handleChange}
-                                       value={email} name='email' />
+                        <Grid container item  justifyContent="center" spacing={3} alignItems="center">
+                            <Grid item>
+                                <Fingerprint />
+                            </Grid>
+                            <Grid item>
+                                <Input onChange={handleChange}
+                                       type="password" value={password} name='password' />
+                            </Grid>
+                        </Grid>
+                        <Grid container item alignItems="center" justifyContent="center">
+                            <Grid item>
+                                <Button onClick={() => history.push('/signup')} disableFocusRipple disableRipple style={{ textTransform: "none" }} variant="text" color="secondary">Register</Button>
+                            </Grid>
+                        </Grid>
+                        <Grid container item justifyContent="center" style={{ marginTop: '10px' }}>
+                            <Button type="submit" variant="outlined" color="secondary" style={{ textTransform: "none" }}>Login</Button>
                         </Grid>
                     </Grid>
-                    <Grid container spacing={8} alignItems="flex-end">
-                        <Grid item>
-                            <Fingerprint />
-                        </Grid>
-                        <Grid item md={true} sm={true} xs={true}>
-                            <Input onChange={handleChange}
-                                   value={password} name='password' />
-                        </Grid>
-                    </Grid>
-                    <Grid container alignItems="center" justifyContent="space-between">
-                        <Grid item>
-                            <Button disableFocusRipple disableRipple style={{ textTransform: "none" }} variant="text" color="primary">Forgot password ?</Button>
-                        </Grid>
-                    </Grid>
-                    <Grid container justifyContent="center" style={{ marginTop: '10px' }}>
-                        <Button type="submit" variant="outlined" color="primary" style={{ textTransform: "none" }}>Login</Button>
-                    </Grid>
-                </div>
-                </form>
-            </Paper>
+                    </form>
+            </>
         );
 
 }

@@ -1,9 +1,9 @@
 import React from 'react';
 
-export default function Friends() {
+export default function AddNews() {
     return (
         <div>
-            <h1>Friends</h1>
+            <h1>Add News</h1>
         </div>
     )
 }

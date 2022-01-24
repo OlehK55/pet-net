@@ -17,21 +17,7 @@ import App from './App';
 
 import './index.css';
 
-declare module '@material-ui/core/styles/createTheme' {
-    interface Theme {
-        status: {
-            danger: string;
-        };
-    }
-    // allow configuration using `createTheme`
-    interface ThemeOptions {
-        status?: {
-            danger?: string;
-        };
-    }
-}
-
-const theme = createTheme();
+import theme from './components/ui/theme';
 
 const app = (
     <Provider store={store}>
