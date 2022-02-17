@@ -1,13 +1,20 @@
 import { ActionType } from '../acttion-types';
-import { Action } from '../actions';
+import { UserAction } from '../actions';
 
 const INITIAL_STATE = {
     currentUser: null,
-    error: null
+    error: null,
+    usersList: {}
 };
 
-const userReducer = (state = INITIAL_STATE, action: Action) => {
+const userReducer = (state = INITIAL_STATE, action: UserAction) => {
     switch (action.type) {
+        case ActionType.FETCH_USERS_LIST_SUCCESS:
+            return {
+                ...state,
+                usersList: action.payload,
+                error: null
+            };
         case ActionType.SIGN_IN_SUCCESS:
             return {
                 ...state,
@@ -15,7 +22,6 @@ const userReducer = (state = INITIAL_STATE, action: Action) => {
                 error: null
             };
         case ActionType.SIGN_OUT_SUCCESS:
-            console.log('reduser SIGN_OUT_SUCCESS:');
             return {
                 ...state,
                 currentUser: null,
@@ -24,7 +30,7 @@ const userReducer = (state = INITIAL_STATE, action: Action) => {
         case ActionType.SIGN_IN_FAILURE:
         case ActionType.SIGN_OUT_FAILURE:
         case ActionType.SIGN_UP_FAILURE:
-            console.log('reduser SIGN_OUT_FAILURE:');
+        case ActionType.FETCH_USERS_LIST_FAILURE:
             return {
                 ...state,
                 error: action.payload

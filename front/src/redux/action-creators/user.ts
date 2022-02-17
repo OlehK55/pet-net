@@ -1,5 +1,8 @@
 import { ActionType } from '../acttion-types';
 import {
+    fetchUsersListStartAction,
+    fetchUsersListSuccessAction,
+    fetchUsersListFailureAction,
     signInSuccessAction,
     signInFailureAction,
     emailSignInStartAction,
@@ -9,11 +12,10 @@ import {
     checkUserSessionAction,
     signUpStartAction,
     signUpFailureAction,
-    signUpSuccessAction
+    signUpSuccessAction, fetchNewsListStartAction, fetchNewsListSuccessAction, fetchNewsListFailureAction
 } from '../actions';
-import user, { IUser, IEmailAndPassword, IUserCredentials } from '../../types/user';
+import { IUser, IEmailAndPassword, IUserCredentials } from '../../types/user';
 import { ErrorMessage } from '../../types/handlers/ErrorMessage';
-
 
 export const signInSuccess = (user: IUser):signInSuccessAction => ({
     type: ActionType.SIGN_IN_SUCCESS,
@@ -60,6 +62,20 @@ export const signOutFailure = (error: ErrorMessage): signOutFailureAction => ({
 
 export const checkUserSession = ():checkUserSessionAction => ({
     type: ActionType.CHECK_USER_SESSION
+});
+
+export const fetchUsersListStart = ():fetchUsersListStartAction => ({
+    type: ActionType.FETCH_USERS_LIST_START,
+});
+
+export const fetchUsersListSuccess = (usersList: {[key: string]: IUser}):fetchUsersListSuccessAction => ({
+    type: ActionType.FETCH_USERS_LIST_SUCCESS,
+    payload: usersList
+});
+
+export const fetchUsersListFailure = (error: ErrorMessage):fetchUsersListFailureAction => ({
+    type: ActionType.FETCH_USERS_LIST_FAILURE,
+    payload: error
 });
 
 

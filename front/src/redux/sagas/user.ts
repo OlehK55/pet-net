@@ -2,22 +2,39 @@ import { takeLatest, put, all, call } from 'redux-saga/effects';
 
 import {
     auth,
-    createUserProfileDocument,
+    createUserProfileDocument, firestore,
     getCurrentUser
 } from '../../utils/firebase';
 
 import { ActionType } from '../acttion-types'
-import { IUser, IEmailAndPassword } from '../../types/user';
+import { IUser } from '../../types/user';
 import {
     signInSuccess,
     signInFailure,
     signOutSuccess,
     signOutFailure,
     signUpSuccess,
-    signUpFailure
+    signUpFailure, fetchUsersListSuccess, fetchUsersListFailure
 } from '../action-creators';
 
+export function* fetchUsersListAsync() {
+    try {
+        const newsCollectionRef = firestore.collection('users');
+        // @ts-ignore
+        const snapshot = yield newsCollectionRef.get();
+        const usersList = {};
+        // @ts-ignore
+        snapshot.docs.map(doc => {
+            const data =  doc.data();
+            // @ts-ignore
+            usersList[doc.id] = { ...data, uid: doc.id}
+        });
 
+        yield put(fetchUsersListSuccess(usersList));
+    } catch (error) {
+        yield put(fetchUsersListFailure(error));
+    }
+}
 
 export function* getSnapshotFromUserAuth(userAuth: IUser, additionalData?: any) {
     try {
@@ -41,7 +58,6 @@ export function* getSnapshotFromUserAuth(userAuth: IUser, additionalData?: any) 
 export function* signInWithEmail({ payload: { email, password } }) {
     try {
         const { user } = yield auth.signInWithEmailAndPassword(email, password);
-        console.log('user', user);
         yield getSnapshotFromUserAuth(user);
     } catch (error) {
         yield put(signInFailure(error));
@@ -49,14 +65,11 @@ export function* signInWithEmail({ payload: { email, password } }) {
 }
 
 export function* signOut() {
-    console.log('signOut');
     try {
         // @ts-ignore
         const x = yield auth.signOut();
-        console.log('1', x);
         yield put(signOutSuccess());
     } catch (error) {
-        console.log('2');
         yield put(signOutFailure(error));
     }
 }
@@ -65,9 +78,6 @@ export function* signOut() {
 export function* signUp({ payload: { email, password, displayName } }) {
     try {
         const { user } = yield auth.createUserWithEmailAndPassword(email, password);
-
-        console.log('USER', user);
-        console.log('displayName', displayName);
         yield put(signUpSuccess({ user, additionalData: { displayName } }));
     } catch (error) {
         yield put(signUpFailure(error));
@@ -100,12 +110,10 @@ export function* onCheckUserSession() {
 }
 
 export function* onSignOutStart() {
-    console.log('zzz');
     yield takeLatest(ActionType.SIGN_OUT_START, signOut);
 }
 
 export function* onSignUpStart() {
-    console.log('rrrrrr');
     // @ts-ignore
     yield takeLatest(ActionType.SIGN_UP_START, signUp);
 }
@@ -115,6 +123,10 @@ export function* onSignUpSuccess() {
     yield takeLatest(ActionType.SIGN_UP_SUCCESS, signInAfterSignUp);
 }
 
+export function* onFetchUsersListStart() {
+    // @ts-ignore
+    yield takeLatest(ActionType.FETCH_USERS_LIST_START, fetchUsersListAsync);
+}
 
 export function* userSagas() {
     yield all([
@@ -122,6 +134,7 @@ export function* userSagas() {
         call(onCheckUserSession),
         call(onSignOutStart),
         call(onSignUpStart),
-        call(onSignUpSuccess)
+        call(onSignUpSuccess),
+        call(onFetchUsersListStart)
     ]);
 }

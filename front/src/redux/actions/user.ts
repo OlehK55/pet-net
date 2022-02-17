@@ -49,7 +49,21 @@ export interface  checkUserSessionAction {
     type: ActionType.CHECK_USER_SESSION
 };
 
-export type Action =
+export interface  fetchUsersListStartAction {
+    type: ActionType.FETCH_USERS_LIST_START;
+};
+
+export interface  fetchUsersListSuccessAction {
+    type: ActionType.FETCH_USERS_LIST_SUCCESS;
+    payload: {[key: string]: IUser};
+}
+
+export interface  fetchUsersListFailureAction {
+    type: ActionType.FETCH_USERS_LIST_FAILURE;
+    payload: ErrorMessage;
+};
+
+export type UserAction =
     | signInSuccessAction
     | signInFailureAction
     | emailSignInStartAction
@@ -59,7 +73,10 @@ export type Action =
     | signOutStartAction
     | signOutSuccessAction
     | signOutFailureAction
-    | checkUserSessionAction;
+    | checkUserSessionAction
+    | fetchUsersListSuccessAction
+    | fetchUsersListFailureAction
+    | fetchUsersListStartAction;
 
 
 

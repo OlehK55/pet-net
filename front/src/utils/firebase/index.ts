@@ -1,7 +1,8 @@
 import firebase from 'firebase/app';
 import 'firebase/firestore';
 import 'firebase/auth';
-import { IUser, IEmailAndPassword } from '../../types/user';
+import { IUser } from '../../types/user';
+import { INews } from '../../types/news';
 
 const config = {
     apiKey: process.env.REACT_APP_FB_API_KEY,
@@ -41,6 +42,21 @@ export const createUserProfileDocument = async (userAuth: IUser , additionalData
     return userRef;
 };
 
+
+export const createNewsDocument = async (news: INews ) => {
+
+    const newsCollectionRef = firestore.collection(`news`);
+    const createdAt = new Date();
+    news.createdAt = createdAt;
+    try {
+        const newsItem = await newsCollectionRef.add(news);
+        news.uid = newsItem.id
+    } catch (error) {
+        // @ts-ignore
+        console.log('error creating news', error.message);
+    }
+    return news;
+};
 
 
 export const getCurrentUser = () => {

@@ -13,7 +13,7 @@ import Header from "./components/header";
 
 import { selectCurrentUser } from './redux/selectors/user';
 import {checkUserSession, signOutStart} from './redux/action-creators';
-import { Action } from "./redux/actions";
+import { UserAction } from "./redux/actions";
 import {IUser} from "./types/user";
 import People from "./pages/people";
 import AddNews from "./pages/addnews";
@@ -39,7 +39,6 @@ class App extends React.Component<Props> {
         const isAuthorised = !!currentUser;
         const { signOut } = this.props;
         console.log('currentUser', currentUser);
-        console.log('isAuthorised', isAuthorised);
         return (
             <div>
                 {isAuthorised? <Header isAuthorised={isAuthorised} currentUser={currentUser} handleSignOut={signOut} />: ''}
@@ -60,7 +59,7 @@ const mapStateToProps = createStructuredSelector({
     currentUser: selectCurrentUser
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
+const mapDispatchToProps = (dispatch: Dispatch<UserAction>) => ({
     checkUserSession: () => dispatch(checkUserSession()),
     signOut: () => dispatch(signOutStart())
 });

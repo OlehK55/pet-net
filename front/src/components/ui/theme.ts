@@ -2,7 +2,7 @@ import {
     createTheme,
 } from '@material-ui/core/styles';
 
-import {deepOrange, green, yellow} from '@material-ui/core/colors';
+import {deepOrange, green} from '@material-ui/core/colors';
 
 
 export default  createTheme({

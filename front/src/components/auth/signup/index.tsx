@@ -2,7 +2,7 @@ import React, {ChangeEvent, Dispatch, FormEvent, useState} from 'react';
 import { connect } from 'react-redux';
 import { Paper, withStyles, Grid, Button, Input } from '@material-ui/core';
 import { Face, Fingerprint } from '@material-ui/icons';
-import { Action } from '../../../redux/actions';
+import { UserAction } from '../../../redux/actions';
 
 
 import { signUpStart } from '../../../redux/action-creators';
@@ -96,7 +96,7 @@ const  SignUpForm: React.FC<Props> = (props) => {
 
 }
 
-const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
+const mapDispatchToProps = (dispatch: Dispatch<UserAction>) => ({
     SignUpStart: (email: string, password: string, displayName: string) =>
         dispatch(signUpStart({ email, password, displayName }))
 });
